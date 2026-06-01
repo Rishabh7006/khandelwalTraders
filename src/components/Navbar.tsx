@@ -271,66 +271,69 @@ export default function Navbar({
         </div>
       </div>
 
-      {/* MOBILE MENU */}
+      {/* MOBILE DRAWER */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{
-              opacity: 0,
-              height: 0,
-            }}
-            animate={{
-              opacity: 1,
-              height: "auto",
-            }}
-            exit={{
-              opacity: 0,
-              height: 0,
-            }}
-            className={`md:hidden ${
-              darkMode
-                ? "bg-neutral-800"
-                : "bg-gray-50"
-            } border-t ${
-              darkMode
-                ? "border-neutral-700"
-                : "border-gray-200"
-            }`}
-          >
-            <div className="px-4 py-4 space-y-3">
-              {navLinks.map((link) => (
-                <button
-                  key={link.id}
-                  onClick={() =>
-                    handleNavigation(
-                      link.id
-                    )
-                  }
-                  className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition-colors ${
-                    currentSection ===
-                    link.id
-                      ? "bg-amber-600 text-white"
-                      : darkMode
-                      ? "text-gray-300 hover:bg-neutral-700"
-                      : "text-neutral-600 hover:bg-gray-100"
-                  }`}
-                >
-                  {link.name}
+          <>
+            {/* BACKDROP */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="fixed inset-0 bg-black z-40 md:hidden"
+            />
+
+            {/* DRAWER */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.3 }}
+              className={`fixed top-0 right-0 h-full w-[280px] z-50 md:hidden shadow-2xl ${
+                darkMode ? "bg-neutral-900" : "bg-white"
+              }`}
+            >
+              {/* HEADER */}
+              <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-neutral-700">
+                <h2 className={`font-bold ${darkMode ? "text-white" : "text-black"}`}>
+                  Menu
+                </h2>
+
+                <button onClick={() => setMobileMenuOpen(false)}>
+                  <X size={22} />
                 </button>
-              ))}
+              </div>
 
-              <a
-                href="tel:9986461414"
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg font-medium bg-amber-600 text-white"
-              >
-                <Phone size={18} />
+              {/* LINKS */}
+              <div className="p-4 space-y-3">
+                {navLinks.map((link) => (
+                  <button
+                    key={link.id}
+                    onClick={() => handleNavigation(link.id)}
+                    className={`block w-full text-left px-4 py-3 rounded-lg font-medium transition ${
+                      currentSection === link.id
+                        ? "bg-amber-600 text-white"
+                        : darkMode
+                        ? "text-gray-300 hover:bg-neutral-800"
+                        : "text-neutral-700 hover:bg-gray-100"
+                    }`}
+                  >
+                    {link.name}
+                  </button>
+                ))}
 
-                <span>
+                {/* CALL BUTTON */}
+                <a
+                  href="tel:9986461414"
+                  className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg font-medium bg-amber-600 text-white mt-4"
+                >
+                  <Phone size={18} />
                   Call: 9986461414
-                </span>
-              </a>
-            </div>
-          </motion.div>
+                </a>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.nav>
